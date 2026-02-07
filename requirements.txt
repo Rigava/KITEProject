@@ -2,5 +2,4 @@ kiteconnect
 pandas
 requests
 altair<5
-streamlit
 plotly
