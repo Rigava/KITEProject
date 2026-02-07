@@ -79,7 +79,7 @@ if st.button("Backtesting Strategy1"):
     df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
     df = add_indicators(df)
     df["ADX"] = compute_adx(df,14)
-    df['%Change'] = ((df['Close'] / df['EMA_50'])-1)*100
+    df['%Change'] = ((df['close'] / df['EMA_50'])-1)*100
     df = df.dropna()
     st.plotly_chart(plot_chart(df), use_container_width=True) 
     trades = backtest_rsi_mean_reversion(df)
