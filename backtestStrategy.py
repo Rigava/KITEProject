@@ -99,8 +99,8 @@ def plot_price_with_trades(df, trades, ticker):
             ax.scatter(entry, entry_price, marker="^",color='green')
             ax.scatter(exit_, exit_price, marker="v",color='red')
         else:
-            ax.scatter(entry, entry_price, marker="^")
-            ax.scatter(exit_, exit_price, marker="v")
+            ax.scatter(entry, entry_price, marker="v",color='blue')
+            ax.scatter(exit_, exit_price, marker="^",color = 'red')
 
         ax.plot([entry, exit_], [entry_price, exit_price])
 
