@@ -1,5 +1,5 @@
 import streamlit as st
-from st_utils import get_historical_data, get_instruments,plot_ohlc,AddSMAIndicators,optimize_sma
+from st_utils import get_historical_data, get_instruments,plot_ohlc
 import pandas as pd
 import datetime
 from datetime import date, timedelta
