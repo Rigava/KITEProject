@@ -5,32 +5,33 @@ import requests
 import pandas as pd
 import plotly.graph_objects as go
 
-def load_access_token():
-    with open("loginCredential.json") as f:
-        creds = json.load(f)
-    api_key = creds["api_key"]
-    
-    token_file = f"AccessToken/{datetime.date.today()}.json"
-    if os.path.exists(token_file):
-        with open(token_file) as f:
-            access_token = json.load(f)
-    else:
-        raise FileNotFoundError("Access token not found. Please login and generate it.")
-    
-    return access_token, api_key
+def get_instruments(enctoken):
+    url = "https://api.kite.trade/instruments/NSE"
+    headers = {"Cookie": f"enctoken={enctoken}"}
+    resp = requests.get(url, headers=headers)
+    df = pd.read_csv(StringIO(resp.text))
+    # df = df[df['segment'] == 'INDICES']
+    return df['name'].unique()
 
-def fetch_historical_data(api_key, access_token, token, interval,from_date, to_date):
-    url = f"https://api.kite.trade/instruments/historical/{token}/{interval}"
+def get_token_by_name(symbol, enctoken):
+    url = "https://api.kite.trade/instruments/NSE"
+    headers = {"Cookie": f"enctoken={enctoken}"}
+    df = pd.read_csv(StringIO(requests.get(url, headers=headers).text))
+    # match = df[(df['name'].str.upper() == symbol.upper()) & (df['segment'] == 'INDICES')]
+    match = df[(df['name'].str.upper() == symbol.upper())]
+    return int(match['instrument_token'].values[0]) if not match.empty else None
+
+def get_historical_data(enctoken,symbol,interval,from_date, to_date):
+    token = get_token_by_name(symbol, enctoken)
+    if not token:
+        return None
+    url = f"https://kite.zerodha.com/oms/instruments/historical/{token}/{interval}"
     params = {
-        "from": f"{from_date} 09:15:00",
-        "to": f"{to_date} 15:30:00",
-        "oi": "1"
+    "from": from_date.strftime("%Y-%m-%d %H:%M:%S"),
+    "to": to_date.strftime("%Y-%m-%d %H:%M:%S"),
+    'oi':"1"
     }
-    headers = {
-        "X-Kite-Version": "3",
-        "Authorization": f"token {api_key}:{access_token}"
-    }
-    
+    headers = {"Authorization": f"enctoken {enctoken}"}
     response = requests.get(url, headers=headers, params=params)
     if response.status_code == 200:
         candles = response.json()["data"]["candles"]
@@ -38,15 +39,23 @@ def fetch_historical_data(api_key, access_token, token, interval,from_date, to_d
         df["timestamp"] = pd.to_datetime(df["timestamp"])
         return df
     else:
-        return pd.DataFrame()
+        raise Exception(
+            f"Kite API Error {response.status_code}\n"
+            f"URL: {response.url}\n"
+            f"Response: {response.text}"
+        )
+
+    return pd.DataFrame()
     
 def plot_ohlc(df):
-    fig = go.Figure(data=[go.Candlestick(
-        x=df["timestamp"],
+    fig = go.Figure()
+    fig.add_candlestick(
+        x=df['timestamp'],
         open=df["open"],
         high=df["high"],
         low=df["low"],
-        close=df["close"]
-    )])
+        close=df["close"],
+        name="Price"
+    )
     fig.update_layout(title="OHLC Chart", xaxis_title="Datetime", yaxis_title="Price")
     return fig
