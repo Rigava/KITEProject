@@ -3,6 +3,15 @@ from st_utils import get_historical_data, get_instruments,plot_ohlc
 import pandas as pd
 import datetime
 from datetime import date, timedelta
+from technical import add_indicator,compute_adx,compute_atr, plot_chart
+from backtestStrategy import backtest_rsi_mean_reversion
+import matplotlib.pyplot as plt
+# from datetime import datetime
+import ta
+import plotly.graph_objects as go
+# import json
+# import pandas as pd
+import numpy as np
 
 def enforce_kite_limits(interval, from_date, to_date):
     max_days = {
@@ -49,7 +58,7 @@ with col3:
     interval = st.selectbox("Interval", ["day", "5minute", "15minute", "hour"])
 # --- Indicators ---
 with col4:
-    indicators = st.multiselect("Select Indicators", ["SMA", "EMA", "RSI", "MACD"], default=["SMA"])
+    indicators = st.multiselect("Select Strategy", ["Mean reversion", "EMA", "RSI", "MACD"], default=["SMA"])
 
 
 
@@ -64,6 +73,23 @@ if st.button("Fetch Data"):
         st.download_button("Download CSV", df.to_csv(index=False), file_name="historical_data.csv")
     else:
         st.error("No data received. Check token, dates, or interval.")
+        
+if st.button("Backtesting Strategy1"):  
+    from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
+    df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
+    df = add_indicators(df)
+    df["ADX"] = compute_adx(df,14)
+    df['%Change'] = ((df['Close'] / df['EMA_50'])-1)*100
+    df = df.dropna()
+    st.plotly_chart(plot_chart(df), use_container_width=True) 
+    trades = backtest_rsi_mean_reversion(df)
+    st.plotly_chart(plot_price_with_trades(df,trades,symbol))
+    metrics = performance_metrics(trades,ticker)
+    result = pd.DataFrame([metrics])
+    with st.expander("Show the backtest trades and performance",expanded = False):
+        st.dataframe(trades)
+        st.dataframe(result)
+          
 # if st.button("Optimize"):
 #         result_df = pd.DataFrame()
 #         for symbol in selected_symbols:
