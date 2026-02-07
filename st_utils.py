@@ -4,6 +4,9 @@ import datetime
 import requests
 import pandas as pd
 import plotly.graph_objects as go
+import numpy as np
+from datetime import datetime
+from io import StringIO
 
 def get_instruments(enctoken):
     url = "https://api.kite.trade/instruments/NSE"
