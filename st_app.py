@@ -85,7 +85,7 @@ if st.button("Backtesting Mean reversion"):
     st.plotly_chart(plot_chart(df), use_container_width=True) 
     trades = backtest_rsi_mean_reversion(df)
     st.plotly_chart(plot_price_with_trades(df,trades,symbol))
-    metrics = performance_metrics(trades,ticker)
+    metrics = performance_metrics(trades,symbol)
     result = pd.DataFrame([metrics])
     with st.expander("Show the backtest trades and performance",expanded = False):
         st.dataframe(trades)
