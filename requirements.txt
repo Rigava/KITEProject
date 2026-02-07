@@ -1,4 +1,5 @@
 kiteconnect
+matplotlib
 pandas
 requests
 altair<5
