@@ -74,11 +74,12 @@ if st.button("Fetch Data"):
     else:
         st.error("No data received. Check token, dates, or interval.")
         
-if st.button("Backtesting Strategy1"):  
+if st.button("Backtesting Mean reversion"):  
     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
     df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
     df = add_indicators(df)
     df["ADX"] = compute_adx(df,14)
+    df["ATR"] = compute_atr(df,14)
     df['%Change'] = ((df['close'] / df['EMA_50'])-1)*100
     df = df.dropna()
     st.plotly_chart(plot_chart(df), use_container_width=True) 
