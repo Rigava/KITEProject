@@ -16,7 +16,7 @@ def backtest_rsi_mean_reversion(df):
     trades = []
 
     for i in range(1, len(df)):
-        price = float(df["Close"].iloc[i])
+        price = float(df["close"].iloc[i])
         rsi = df["RSI"].iloc[i]
         atr = df["ATR"].iloc[i]
         adx =  df["ADX"].iloc[i]
@@ -84,7 +84,7 @@ def plot_price_with_trades(df, trades, ticker):
     fig, ax = plt.subplots(figsize=(14, 6))
 
     # Plot price
-    ax.plot(df.index, df["Close"], label="Close Price")
+    ax.plot(df.index, df["close"], label="Close Price")
 
     # Plot trades
     for _, trade in trades.iterrows():
@@ -92,8 +92,8 @@ def plot_price_with_trades(df, trades, ticker):
         exit_ = trade["Exit Date"]
         direction = trade["Direction"]
 
-        entry_price = df.loc[entry, "Close"]
-        exit_price = df.loc[exit_, "Close"]
+        entry_price = df.loc[entry, "close"]
+        exit_price = df.loc[exit_, "close"]
 
         if direction == 1:
             ax.scatter(entry, entry_price, marker="^",color='green')
