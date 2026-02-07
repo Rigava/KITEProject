@@ -9,16 +9,16 @@ import numpy as np
 
 # Technical Indicators
 def add_indicators(df):
-    df["RSI"] = ta.momentum.RSIIndicator(df["Close"]).rsi()
-    df["EMA_20"] = ta.trend.EMAIndicator(df["Close"], 20).ema_indicator()
-    df["EMA_50"] = ta.trend.EMAIndicator(df["Close"], 50).ema_indicator()
+    df["RSI"] = ta.momentum.RSIIndicator(df["close"]).rsi()
+    df["EMA_20"] = ta.trend.EMAIndicator(df["close"], 20).ema_indicator()
+    df["EMA_50"] = ta.trend.EMAIndicator(df["close"], 50).ema_indicator()
     df["MACD"] = ta.trend.MACD(df["Close"]).macd()
-    df["MACD_SIGNAL"] = ta.trend.MACD(df["Close"]).macd_signal()
+    df["MACD_SIGNAL"] = ta.trend.MACD(df["close"]).macd_signal()
     return df
 def compute_adx(df, period=14):
-    high = df["High"]
-    low = df["Low"]
-    close = df["Close"]
+    high = df["high"]
+    low = df["low"]
+    close = df["close"]
     # Directional Movement
     up_move = high.diff()
     down_move = low.shift() - low
@@ -41,9 +41,9 @@ def compute_adx(df, period=14):
     adx = dx.rolling(period).mean()
     return adx
 def compute_atr(df, period=14):
-    high_low = df["High"] - df["Low"]
-    high_close = np.abs(df["High"] - df["Close"].shift())
-    low_close = np.abs(df["Low"] - df["Close"].shift())
+    high_low = df["high"] - df["low"]
+    high_close = np.abs(df["high"] - df["close"].shift())
+    low_close = np.abs(df["low"] - df["close"].shift())
 
     tr = pd.concat([high_low, high_close, low_close], axis=1).max(axis=1)
     return tr.rolling(period).mean()
@@ -53,10 +53,10 @@ def plot_chart(df):
     fig = go.Figure()
     fig.add_candlestick(
         x=df.index,
-        open=df["Open"],
-        high=df["High"],
-        low=df["Low"],
-        close=df["Close"],
+        open=df["open"],
+        high=df["high"],
+        low=df["low"],
+        close=df["close"],
         name="Price"
     )
     fig.add_trace(go.Scatter(
