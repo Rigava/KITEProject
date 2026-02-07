@@ -58,7 +58,7 @@ with col3:
     interval = st.selectbox("Interval", ["day", "5minute", "15minute", "hour"])
 # --- Indicators ---
 with col4:
-    indicators = st.multiselect("Select Strategy", ["Mean reversion", "EMA", "RSI", "MACD"], default=["SMA"])
+    indicators = st.multiselect("Select Strategy", ["Mean reversion", "EMA", "RSI", "MACD"], default=["Mean reversion"])
 
 
 
