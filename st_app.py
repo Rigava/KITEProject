@@ -3,7 +3,7 @@ from st_utils import get_historical_data, get_instruments,plot_ohlc
 import pandas as pd
 import datetime
 from datetime import date, timedelta
-from technical import add_indicator,compute_adx,compute_atr, plot_chart
+from technical import add_indicators,compute_adx,compute_atr, plot_chart
 from backtestStrategy import backtest_rsi_mean_reversion
 import matplotlib.pyplot as plt
 # from datetime import datetime
