@@ -63,3 +63,50 @@ def backtest_rsi_mean_reversion(df):
                 position = 0
 
     return pd.DataFrame(trades)
+    
+def performance_metrics(trades,sy):
+    if trades.empty:
+        return {}
+
+    wins = trades[trades["PnL"] > 0]
+    losses = trades[trades["PnL"] < 0]
+
+    return {
+        "Stok": sy,
+        "Trades": len(trades),
+        "Win Rate": round(len(wins) / len(trades), 2),
+        "Avg Win": wins["PnL"].mean(),
+        "Avg Loss": losses["PnL"].mean(),
+        "Expectancy": trades["PnL"].mean(),
+        "Total PnL": trades["PnL"].sum()
+    }
+def plot_price_with_trades(df, trades, ticker):
+    fig, ax = plt.subplots(figsize=(14, 6))
+
+    # Plot price
+    ax.plot(df.index, df["Close"], label="Close Price")
+
+    # Plot trades
+    for _, trade in trades.iterrows():
+        entry = trade["Entry Date"]
+        exit_ = trade["Exit Date"]
+        direction = trade["Direction"]
+
+        entry_price = df.loc[entry, "Close"]
+        exit_price = df.loc[exit_, "Close"]
+
+        if direction == 1:
+            ax.scatter(entry, entry_price, marker="^",color='green')
+            ax.scatter(exit_, exit_price, marker="v",color='red')
+        else:
+            ax.scatter(entry, entry_price, marker="^")
+            ax.scatter(exit_, exit_price, marker="v")
+
+        ax.plot([entry, exit_], [entry_price, exit_price])
+
+    ax.set_title(f"{ticker} – RSI Mean Reversion Trades")
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Price")
+    ax.legend()
+
+    return fig
