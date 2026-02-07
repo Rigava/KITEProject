@@ -4,3 +4,4 @@ pandas
 requests
 altair<5
 plotly
+ta
