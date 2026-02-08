@@ -51,14 +51,17 @@ def backtest_rsi_mean_reversion(df):
 
             if exit_trade:
                 exit_index = df.index[i]
-                holding_days = exit_index-entry_index
+                exit_date = df['date'].iloc[i]
+                holding_period = exit_date - entry_date
+                holding_counter = exit_index-entry_index
                 pnl = (price - entry_price) * position
                 trades.append({
                     # "Entry Index": entry_index,
                     "Entry Date": entry_date,
                     "Entry Price": entry_price,
                     # "Exit Index": df.index[i],
-                    "Holding time": holding_days,
+                    "Interval row": holding_counter,
+                    "Duration": holding_period,
                     "Exit Date": df['date'].iloc[i],
                     "Exit Price": price,
                     "Direction": position,
