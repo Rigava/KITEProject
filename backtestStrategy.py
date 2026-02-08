@@ -91,7 +91,7 @@ def plot_price_with_trades(df, trades, ticker):
     for _, trade in trades.iterrows():
         # entry = trade["Entry Index"] # index from the trade df is used to fetch the entry price in df (stock ohlc data) 
         # exit_ = trade["Exit Index"]
-        # direction = trade["Direction"]
+        direction = trade["Direction"]
 
         # entry_price = df.loc[entry, "close"]
         # exit_price = df.loc[exit_, "close"]
