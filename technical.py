@@ -52,7 +52,7 @@ def compute_atr(df, period=14):
 def plot_chart(df):
     fig = go.Figure()
     fig.add_candlestick(
-        x=df.index,
+        x=df.date,
         open=df["open"],
         high=df["high"],
         low=df["low"],
@@ -60,12 +60,12 @@ def plot_chart(df):
         name="Price"
     )
     fig.add_trace(go.Scatter(
-        x=df.index,
+        x=df.date,
         y=df["EMA_20"],
         name="EMA 20"
     ))
     fig.add_trace(go.Scatter(
-        x=df.index,
+        x=df.date,
         y=df["EMA_50"],
         name="EMA 50"
     ))
