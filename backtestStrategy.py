@@ -30,7 +30,7 @@ def backtest_rsi_mean_reversion(df):
                 position = 1
                 entry_price = price
                 stop_loss = price - 2 * atr
-                entry_date = df.index[i]
+                entry_date = df.date[i]
 
             elif rsi >= 70 and adx < 20:
                 position = -1
