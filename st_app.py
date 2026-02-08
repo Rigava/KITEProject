@@ -18,7 +18,7 @@ def enforce_kite_limits(interval, from_date, to_date):
         "5minute": 60,
         "15minute": 60,
         "hour": 180,
-        "day": 5000
+        "day": 2000
     }
 
     allowed_days = max_days.get(interval, 60)
