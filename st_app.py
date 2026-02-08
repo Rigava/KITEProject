@@ -92,11 +92,11 @@ if st.button("Shortlist RSI"):
         df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
         df = add_indicators(df)
         if df["RSI"].iloc[-1] > rsi_low and df["RSI"].iloc[-2] < rsi_low: 
-            Buy.append(files)
+            Buy.append(stock)
         elif df["RSI"].iloc[-1] < rsi_high and df["RSI"].iloc[-2] > rsi_high:
-            Sell.append(files)
+            Sell.append(stock)
         else:
-            Hold.append(files)  
+            Hold.append(stock)  
         # Display stock data and recommendation
     st.write(":blue[List of stock with buy signal]",Buy)
     st.write(":blue[List of stock with sell signal]",Sell)
