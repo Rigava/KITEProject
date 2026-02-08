@@ -41,7 +41,7 @@ def get_historical_data(enctoken,symbol,interval,from_date, to_date):
         df = pd.DataFrame(candles, columns=["timestamp", "open", "high", "low", "close", "volume", "open_interest"])
         df["timestamp"] = pd.to_datetime(df["timestamp"])
         df['date'] =df['timestamp']
-        df.set_index('date',inplace=True)
+        # df.set_index('date',inplace=True)
         return df
     else:
         raise Exception(
@@ -55,7 +55,7 @@ def get_historical_data(enctoken,symbol,interval,from_date, to_date):
 def plot_ohlc(df):
     fig = go.Figure()
     fig.add_candlestick(
-        x=df['timestamp'],
+        x=df['date'],
         open=df["open"],
         high=df["high"],
         low=df["low"],
