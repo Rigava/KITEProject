@@ -13,7 +13,7 @@ def backtest_rsi_mean_reversion(df):
     trades = []
 
     for i in range(1, len(df)):
-        price = float(df["close"].iloc[i])
+        price = float(df["price"].iloc[i])
         rsi = df["RSI"].iloc[i]
         atr = df["ATR"].iloc[i]
         adx =  df["ADX"].iloc[i]
