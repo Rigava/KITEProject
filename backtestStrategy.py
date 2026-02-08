@@ -7,9 +7,6 @@ import matplotlib.pyplot as plt
 
 def backtest_rsi_mean_reversion(df):
     df = df.copy()
-    # df["RSI"] = compute_rsi(df["Close"])
-    # df["ATR"] = compute_atr(df)
-    # df['ADX'] = compute_adx(df)
     position = 0
     entry_price = None
     stop_loss = None
@@ -30,13 +27,13 @@ def backtest_rsi_mean_reversion(df):
                 position = 1
                 entry_price = price
                 stop_loss = price - 2 * atr
-                entry_date = df.date[i]
+                entry_date = df.index[i]
 
             elif rsi >= 70 and adx < 20:
                 position = -1
                 entry_price = price
                 stop_loss = price + 2 * atr
-                entry_date = df.date[i]
+                entry_date = df.index[i]
 
         # EXIT
         else:
@@ -84,7 +81,7 @@ def plot_price_with_trades(df, trades, ticker):
     fig, ax = plt.subplots(figsize=(14, 6))
 
     # Plot price
-    ax.plot(df.date, df["close"], label="Close Price")
+    ax.plot(df.index, df["close"], label="Close Price")
 
     # Plot trades
     for _, trade in trades.iterrows():
