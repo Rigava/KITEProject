@@ -50,12 +50,15 @@ def backtest_rsi_mean_reversion(df):
                     exit_trade = True
 
             if exit_trade:
+                exit_index = df.index[i]
+                holding_days = exit_index-entry_index
                 pnl = (price - entry_price) * position
                 trades.append({
-                    "Entry Index": entry_index,
+                    # "Entry Index": entry_index,
                     "Entry Date": entry_date,
                     "Entry Price": entry_price,
-                    "Exit Index": df.index[i],
+                    # "Exit Index": df.index[i],
+                    "Holding time": holding_days,
                     "Exit Date": df['date'].iloc[i],
                     "Exit Price": price,
                     "Direction": position,
@@ -82,7 +85,7 @@ def performance_metrics(trades,sy):
         "Total PnL": trades["PnL"].sum()
     }
 def plot_price_with_trades(df, trades, ticker):
-    fig, ax = plt.subplots(figsize=(16, 12))
+    fig, ax = plt.subplots(figsize=(10, 12))
 
     # Plot price
     ax.plot(df.date, df["close"], label="Close Price")
@@ -92,13 +95,12 @@ def plot_price_with_trades(df, trades, ticker):
         # entry = trade["Entry Index"] # index from the trade df is used to fetch the entry price in df (stock ohlc data) 
         # exit_ = trade["Exit Index"]
         direction = trade["Direction"]
-
         # entry_price = df.loc[entry, "close"]
         # exit_price = df.loc[exit_, "close"]
         entry = trade['Entry Date']
         exit_ = trade['Exit Date']
-        entry_price=trade['Entry Price']
-        exit_price=trade['Exit Price']
+        entry_price = trade['Entry Price']
+        exit_price = trade['Exit Price']
         if direction == 1:
             ax.scatter(entry, entry_price, marker="^",color='green')
             ax.scatter(exit_, exit_price, marker="v",color='red')
