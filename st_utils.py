@@ -41,6 +41,7 @@ def get_historical_data(enctoken,symbol,interval,from_date, to_date):
         df = pd.DataFrame(candles, columns=["timestamp", "open", "high", "low", "close", "volume", "open_interest"])
         df["timestamp"] = pd.to_datetime(df["timestamp"])
         df['date'] =df['timestamp']
+        df['price'] =df['open'].shift(-1)
         # df.set_index('date',inplace=True)
         return df
     else:
