@@ -23,6 +23,71 @@ def backtest_rsi_mean_reversion(df):
 
         # ENTRY
         if position == 0:
+            if rsi <= 30 :
+                position = 1
+                entry_price = price
+                stop_loss = price - 2 * atr
+                entry_index = df.index[i] # for plottung trades
+                entry_date =df['date'].iloc[i]
+
+            elif rsi >= 70:
+                position = -1
+                entry_price = price
+                stop_loss = price + 2 * atr
+                entry_index = df.index[i]
+                entry_date =df['date'].iloc[i]
+
+        # EXIT
+        else:
+            exit_trade = False
+
+            if position == 1:
+                if rsi >= 50 or price <= stop_loss:
+                    exit_trade = True
+
+            elif position == -1:
+                if rsi <= 50 or price >= stop_loss:
+                    exit_trade = True
+
+            if exit_trade:
+                exit_index = df.index[i]
+                exit_date = df['date'].iloc[i]
+                holding_period = exit_date - entry_date
+                holding_counter = exit_index-entry_index
+                pnl = (price - entry_price) * position
+                trades.append({
+                    # "Entry Index": entry_index,
+                    "Entry Date": entry_date,
+                    "Entry Price": entry_price,
+                    # "Exit Index": df.index[i],
+                    "Interval row": holding_counter,
+                    "Duration": holding_period,
+                    "Exit Date": df['date'].iloc[i],
+                    "Exit Price": price,
+                    "Direction": position,
+                    "PnL": pnl
+                })
+                position = 0
+
+    return pd.DataFrame(trades)
+def backtest_rsi_mean_reversion_adx(df):
+    df = df.copy()
+    position = 0
+    entry_price = None
+    stop_loss = None
+    trades = []
+
+    for i in range(1, len(df)):
+        price = float(df["price"].iloc[i])
+        rsi = df["RSI"].iloc[i]
+        atr = df["ATR"].iloc[i]
+        adx =  df["ADX"].iloc[i]
+        # Skip invalid rows
+        if pd.isna(rsi) or pd.isna(atr):
+            continue
+
+        # ENTRY
+        if position == 0:
             if rsi <= 30 and adx < 20:
                 position = 1
                 entry_price = price
