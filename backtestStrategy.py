@@ -81,7 +81,7 @@ def plot_price_with_trades(df, trades, ticker):
     fig, ax = plt.subplots(figsize=(14, 6))
 
     # Plot price
-    ax.plot(df.index, df["close"], label="Close Price")
+    ax.plot(df.date, df["close"], label="Close Price")
 
     # Plot trades
     for _, trade in trades.iterrows():
