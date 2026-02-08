@@ -85,7 +85,7 @@ def performance_metrics(trades,sy):
         "Total PnL": trades["PnL"].sum()
     }
 def plot_price_with_trades(df, trades, ticker):
-    fig, ax = plt.subplots(figsize=(10, 12))
+    fig, ax = plt.subplots(figsize=(12, 8))
 
     # Plot price
     ax.plot(df.date, df["close"], label="Close Price")
