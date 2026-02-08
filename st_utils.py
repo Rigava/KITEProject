@@ -14,6 +14,7 @@ def get_instruments(enctoken):
     resp = requests.get(url, headers=headers)
     df = pd.read_csv(StringIO(resp.text))
     # df = df[df['segment'] == 'INDICES']
+    print(df)
     return df['name'].unique()
 
 def get_token_by_name(symbol, enctoken):
