@@ -13,7 +13,7 @@ def get_instruments(enctoken):
     headers = {"Cookie": f"enctoken={enctoken}"}
     resp = requests.get(url, headers=headers)
     df = pd.read_csv(StringIO(resp.text))
-    # df = df[df['segment'] == 'INDICES']
+    df = df[df['segment'] != 'INDICES']
     print(df)
     return df['name'].unique()
 
