@@ -82,20 +82,23 @@ def performance_metrics(trades,sy):
         "Total PnL": trades["PnL"].sum()
     }
 def plot_price_with_trades(df, trades, ticker):
-    fig, ax = plt.subplots(figsize=(14, 6))
+    fig, ax = plt.subplots(figsize=(16, 12))
 
     # Plot price
-    ax.plot(df.index, df["close"], label="Close Price")
+    ax.plot(df.date, df["close"], label="Close Price")
 
     # Plot trades
     for _, trade in trades.iterrows():
-        entry = trade["Entry Index"]
-        exit_ = trade["Exit Index"]
-        direction = trade["Direction"]
+        # entry = trade["Entry Index"] # index from the trade df is used to fetch the entry price in df (stock ohlc data) 
+        # exit_ = trade["Exit Index"]
+        # direction = trade["Direction"]
 
-        entry_price = df.loc[entry, "close"]
-        exit_price = df.loc[exit_, "close"]
-
+        # entry_price = df.loc[entry, "close"]
+        # exit_price = df.loc[exit_, "close"]
+        entry =trade['Entry Date']
+        exit=trade['Exit Date']
+        entry_price=trade['Entry Price']
+        exit_price=trade['Exit Price']
         if direction == 1:
             ax.scatter(entry, entry_price, marker="^",color='green')
             ax.scatter(exit_, exit_price, marker="v",color='red')
