@@ -40,6 +40,8 @@ def get_historical_data(enctoken,symbol,interval,from_date, to_date):
         candles = response.json()["data"]["candles"]
         df = pd.DataFrame(candles, columns=["timestamp", "open", "high", "low", "close", "volume", "open_interest"])
         df["timestamp"] = pd.to_datetime(df["timestamp"])
+        df['date'] =df['timestamp']
+        df.set_index('date',inplace=True)
         return df
     else:
         raise Exception(
