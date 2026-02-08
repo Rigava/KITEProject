@@ -64,6 +64,10 @@ with col4:
 if st.button("Fetch Data"):
     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
     df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
+    df = add_indicators(df)
+    df["ADX"] = compute_adx(df,14)
+    df["ATR"] = compute_atr(df,14)
+    df['%Change'] = ((df['close'] / df['EMA_50'])-1)*100
     if df is not None and not df.empty:
         st.success(f"{len(df)} rows loaded.")
         st.plotly_chart(plot_ohlc(df), use_container_width=True)
