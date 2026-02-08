@@ -13,9 +13,10 @@ def get_instruments(enctoken):
     headers = {"Cookie": f"enctoken={enctoken}"}
     resp = requests.get(url, headers=headers)
     df = pd.read_csv(StringIO(resp.text))
-    df = df[df['segment'] <> 'INDICES']
-    print(df)
-    return df['name'].unique()
+    # df = df[df['segment'] == 'INDICES']
+    # print(df)
+    result=df['name'].unique()
+    return result
 
 def get_token_by_name(symbol, enctoken):
     url = "https://api.kite.trade/instruments/NSE"
