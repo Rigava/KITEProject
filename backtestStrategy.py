@@ -27,13 +27,13 @@ def backtest_rsi_mean_reversion(df):
                 position = 1
                 entry_price = price
                 stop_loss = price - 2 * atr
-                entry_date = df.index[i]
+                entry_index = df.index[i]
 
             elif rsi >= 70 and adx < 20:
                 position = -1
                 entry_price = price
                 stop_loss = price + 2 * atr
-                entry_date = df.index[i]
+                entry_index = df.index[i]
 
         # EXIT
         else:
@@ -50,9 +50,9 @@ def backtest_rsi_mean_reversion(df):
             if exit_trade:
                 pnl = (price - entry_price) * position
                 trades.append({
-                    "Entry Date": entry_date,
+                    "Entry Index": entry_index,
                     "Entry Price": entry_price,
-                    "Exit Date": df.index[i],
+                    "Exit Index": df.index[i],
                     "Exit Price": price,
                     "Direction": position,
                     "PnL": pnl
@@ -81,12 +81,12 @@ def plot_price_with_trades(df, trades, ticker):
     fig, ax = plt.subplots(figsize=(14, 6))
 
     # Plot price
-    ax.plot(df.date, df["close"], label="Close Price")
+    ax.plot(df.index, df["close"], label="Close Price")
 
     # Plot trades
     for _, trade in trades.iterrows():
-        entry = trade["Entry Date"]
-        exit_ = trade["Exit Date"]
+        entry = trade["Entry Index"]
+        exit_ = trade["Exit Index"]
         direction = trade["Direction"]
 
         entry_price = df.loc[entry, "close"]
