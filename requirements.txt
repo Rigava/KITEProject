@@ -5,3 +5,4 @@ requests
 altair<5
 plotly
 ta
+lxml
