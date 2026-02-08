@@ -95,8 +95,8 @@ def plot_price_with_trades(df, trades, ticker):
 
         # entry_price = df.loc[entry, "close"]
         # exit_price = df.loc[exit_, "close"]
-        entry =trade['Entry Date']
-        exit=trade['Exit Date']
+        entry = trade['Entry Date']
+        exit_ = trade['Exit Date']
         entry_price=trade['Entry Price']
         exit_price=trade['Exit Price']
         if direction == 1:
