@@ -92,7 +92,23 @@ if st.button("Backtesting Mean reversion"):
     with st.expander("Show the backtest trades and performance",expanded = False):
         st.dataframe(trades)
         st.dataframe(result)
-          
+        
+if st.button("Backtesting Mean reversion wih ADX regime"):  
+    from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
+    df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
+    df = add_indicators(df)
+    df["ADX"] = compute_adx(df,14)
+    df["ATR"] = compute_atr(df,14)
+    df['%Change'] = ((df['close'] / df['EMA_50'])-1)*100
+    df = df.dropna()
+    st.plotly_chart(plot_chart(df), use_container_width=True) 
+    trades = backtest_rsi_mean_reversion_adx(df)
+    st.plotly_chart(plot_price_with_trades(df,trades,symbol))
+    metrics = performance_metrics(trades,symbol)
+    result = pd.DataFrame([metrics])
+    with st.expander("Show the backtest trades and performance",expanded = False):
+        st.dataframe(trades)
+        st.dataframe(result)
 # if st.button("Optimize"):
 #         result_df = pd.DataFrame()
 #         for symbol in selected_symbols:
