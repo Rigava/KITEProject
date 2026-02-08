@@ -52,7 +52,7 @@ def backtest_rsi_mean_reversion(df):
                 trades.append({
                     "Entry Date": entry_date,
                     "Entry Price": entry_price,
-                    "Exit Date": df.date[i],
+                    "Exit Date": df.index[i],
                     "Exit Price": price,
                     "Direction": position,
                     "PnL": pnl
