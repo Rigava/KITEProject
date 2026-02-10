@@ -4,7 +4,7 @@ import pandas as pd
 import datetime
 from datetime import date, timedelta
 from technical import add_indicators,compute_adx,compute_atr, plot_chart
-from backtestStrategy import backtest_rsi_mean_reversion,plot_price_with_trades,performance_metrics
+from backtestStrategy import backtest_rsi_mean_reversion, backtest_rsi_mean_reversion_adx, plot_price_with_trades,performance_metrics
 import matplotlib.pyplot as plt
 import ta
 import plotly.graph_objects as go
