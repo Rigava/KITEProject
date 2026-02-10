@@ -10,6 +10,7 @@ import ta
 import plotly.graph_objects as go
 # import json
 import numpy as np
+import requests
 
 def enforce_kite_limits(interval, from_date, to_date):
     max_days = {
