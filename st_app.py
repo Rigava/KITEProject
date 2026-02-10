@@ -90,10 +90,10 @@ if st.button("Shortlist", use_container_width=True):
     data =[] # add fundamental data
     url = "https://raw.githubusercontent.com/Rigava/DataRepo/main/{}.csv".format("NSE_FNO_upload")
     download = requests.get(url).content
-    nse_data = pd.read_csv(io.StringIO(download.decode('utf-8')))   
+    nse_data = pd.read_csv(io.StringIO(download.decode('utf-8')))  
     # st.write(nse_data)
     symbol_list = nse_data['zerodha_name'].unique()
-    # symbols_list = ["AARTI INDUSTRIES","ABB INDIA","GACM TECHNOLOGIES","STYRENIX PERFORMANCE","ACC","ADANI ENTERPRISES","ADOR WELDING","AEGIS LOGISTICS","SANWARIA CONSUMER","HAPPIEST MINDS TECHNO","ALEMBIC","ROUTE MOBILE","ANDHRA SUGARS","GODREJ AGROVET"]
+    # symbols_list = ["AARTI INDUSTRIES","ABB INDIA"]
     for stock in symbol_list:
         from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
         df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
