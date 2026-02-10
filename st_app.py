@@ -12,7 +12,7 @@ import plotly.graph_objects as go
 import numpy as np
 import requests
 import io
-
+from io import StringIO
 def enforce_kite_limits(interval, from_date, to_date):
     max_days = {
         "minute": 60,
