@@ -86,6 +86,8 @@ if st.button("Shortlist", use_container_width=True):
     Hold = []
     framelist = [] # add OHLC data
     data =[] # add fundamental data
+    symbols = ["AARTI INDUSTRIES","ABB INDIA","GACM TECHNOLOGIES","STYRENIX PERFORMANCE","ACC","ADANI ENTERPRISES","ADOR WELDING","AEGIS LOGISTICS","SANWARIA CONSUMER","HAPPIEST MINDS TECHNO","ALEMBIC","ROUTE MOBILE","ANDHRA SUGARS","GODREJ AGROVET"]
+
     for stock in symbols:
         from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
         df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
