@@ -76,9 +76,9 @@ if st.button("Fetch Data"):
     else:
         st.error("No data received. Check token, dates, or interval.")
 
-# if st.button("Shortlist RSI"):
-#     # tickers = symbol
-#     st.write(symbols)
+if st.button("Shortlist RSI"):
+    # tickers = symbol
+    st.write(symbols)
     # symbol_list = tickers.SYMBOL.to_list()
     # symbol_list= symbol_list[5:]
     # symbol_list.remove("TATAMOTORS")
