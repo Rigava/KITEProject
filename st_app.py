@@ -37,13 +37,7 @@ enctoken = st.text_input("🔐 Paste enctoken", type="password")
 if not enctoken:
     st.warning("Enter your enctoken from Kite login to proceed.")
     st.stop()
-# --- Load instruments ---
-# @st.cache_data(ttl=3600)
-def load_symbols(enctoken):
-    df = get_instruments(enctoken)
-    return df
-symbols = load_symbols(enctoken)
-symbol = st.selectbox("Index", symbols)
+
 
 
 # from_date = st.sidebar.date_input("From Date", datetime.date.today())
@@ -62,21 +56,6 @@ with col4:
 
 
 
-# --- Fetch Data ---
-if st.button("Fetch Data"):
-    from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
-    df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
-    df = add_indicators(df)
-    df["ADX"] = compute_adx(df,14)
-    df["ATR"] = compute_atr(df,14)
-    df['%Change'] = ((df['close'] / df['EMA_50'])-1)*100
-    if df is not None and not df.empty:
-        st.success(f"{len(df)} rows loaded.")
-        st.plotly_chart(plot_ohlc(df), use_container_width=True)
-        st.dataframe(df)
-        st.download_button("Download CSV", df.to_csv(index=False), file_name="historical_data.csv")
-    else:
-        st.error("No data received. Check token, dates, or interval.")
 #SHORTLIST FEATURE
 
 shortlist_option = st.sidebar.selectbox("select strategy",["RSI","MACD","Value","Breakout"])
@@ -124,7 +103,29 @@ if st.button("Shortlist", use_container_width=True):
     st.write(":blue[List of stock with negative signal]")
     st.table({"Stocks":Sell})
 
-    
+# --- Load instruments ---
+# @st.cache_data(ttl=3600)
+def load_symbols(enctoken):
+    df = get_instruments(enctoken)
+    return df
+symbols = load_symbols(enctoken)
+symbol = st.selectbox("Index", symbols)
+# --- Fetch Data ---
+if st.button("Fetch Data"):
+    from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
+    df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
+    df = add_indicators(df)
+    df["ADX"] = compute_adx(df,14)
+    df["ATR"] = compute_atr(df,14)
+    df['%Change'] = ((df['close'] / df['EMA_50'])-1)*100
+    if df is not None and not df.empty:
+        st.success(f"{len(df)} rows loaded.")
+        st.plotly_chart(plot_ohlc(df), use_container_width=True)
+        st.dataframe(df)
+        st.download_button("Download CSV", df.to_csv(index=False), file_name="historical_data.csv")
+    else:
+        st.error("No data received. Check token, dates, or interval.")
+        
 if st.button("Backtesting Mean reversion"):  
     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
     df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
