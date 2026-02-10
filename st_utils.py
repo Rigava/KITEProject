@@ -28,10 +28,8 @@ def get_token_by_name(symbol, enctoken):
     match = df[(df['name'].str.upper() == symbol.upper())]
     return int(match['instrument_token'].values[0]) if not match.empty else None
 
-def get_historical_data(enctoken,symbol,interval,from_date, to_date):
-    token = get_token_by_name(symbol, enctoken)
-    if not token:
-        return None
+def get_historical_data(enctoken,token,interval,from_date, to_date):
+
     url = f"https://kite.zerodha.com/oms/instruments/historical/{token}/{interval}"
     params = {
     "from": from_date.strftime("%Y-%m-%d %H:%M:%S"),
