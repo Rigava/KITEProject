@@ -22,13 +22,11 @@ def get_token_by_name(symbol, enctoken):
     url = "https://api.kite.trade/instruments/NSE"
     headers = {"Cookie": f"enctoken={enctoken}"}
     df = pd.read_csv(StringIO(requests.get(url, headers=headers).text))
-    df = df.dropna()
     # match = df[(df['name'].str.upper() == symbol.upper()) & (df['segment'] == 'INDICES')]
     match = df[(df['name'].str.upper() == symbol.upper())]
     return int(match['instrument_token'].values[0]) if not match.empty else None
 
 def get_historical_data(enctoken,token,interval,from_date, to_date):
-
     url = f"https://kite.zerodha.com/oms/instruments/historical/{token}/{interval}"
     params = {
     "from": from_date.strftime("%Y-%m-%d %H:%M:%S"),
