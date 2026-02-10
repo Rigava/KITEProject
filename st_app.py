@@ -94,7 +94,7 @@ if st.button("Shortlist", use_container_width=True):
     # st.write(nse_data)
     symbol_list = nse_data['zerodha_name'].unique()
     # symbols_list = ["AARTI INDUSTRIES","ABB INDIA","GACM TECHNOLOGIES","STYRENIX PERFORMANCE","ACC","ADANI ENTERPRISES","ADOR WELDING","AEGIS LOGISTICS","SANWARIA CONSUMER","HAPPIEST MINDS TECHNO","ALEMBIC","ROUTE MOBILE","ANDHRA SUGARS","GODREJ AGROVET"]
-    for stock in symbols_list:
+    for stock in symbol_list:
         from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
         df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
         # df = yf.download(tickers=yf_tick, period="1y")
