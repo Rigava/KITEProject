@@ -109,7 +109,7 @@ def load_symbols(enctoken):
     df = get_instruments(enctoken)
     return df
 symbols = load_symbols(enctoken)
-symbol = st.selectbox("Index", symbols)
+symbol = st.selectbox("Select stock", symbols)
 # --- Fetch Data ---
 if st.button("Fetch Data"):
     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
