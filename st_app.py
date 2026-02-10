@@ -79,10 +79,11 @@ if st.button("Shortlist", use_container_width=True):
         headers = {"Cookie": f"enctoken={enctoken}"}
         df = pd.read_csv(StringIO(requests.get(url, headers=headers).text))
         df = df.dropna()
-        match = df[(df['name'].str.upper() == symbol.upper())]
-        st.write(match)
-        result = int(match['instrument_token'].values[0])
-        print(result)
+        print(df)
+        # match = df[(df['name'].str.upper() == symbol.upper())]
+        # st.write(match)
+        # result = int(match['instrument_token'].values[0])
+        # print(result)
     #     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
     #     token = get_token_by_name(stock, enctoken)
     #     print(f"Token {token}")
