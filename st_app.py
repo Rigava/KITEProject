@@ -12,7 +12,7 @@ import plotly.graph_objects as go
 import numpy as np
 import requests
 import io
-from io import StringIO
+
 def enforce_kite_limits(interval, from_date, to_date):
     max_days = {
         "minute": 60,
@@ -77,8 +77,7 @@ if st.button("Shortlist", use_container_width=True):
         print(f"Fetching the {stock} stock data")
         url = "https://api.kite.trade/instruments/NSE"
         headers = {"Cookie": f"enctoken={enctoken}"}
-        df = pd.read_csv(StringIO(requests.get(url, headers=headers).text))
-        df = df.dropna()
+        df = pd.read_csv(io.StringIO(requests.get(url, headers=headers).content))
         print(df)
         # match = df[(df['name'].str.upper() == symbol.upper())]
         # st.write(match)
