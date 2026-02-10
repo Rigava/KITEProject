@@ -80,9 +80,11 @@ if st.button("Shortlist", use_container_width=True):
     headers = {"Cookie": f"enctoken={enctoken}"}
     inst = pd.read_csv(io.StringIO(requests.get(url, headers=headers).text))
     st.write(inst)
+    match = inst[(inst['name'].str.upper() == symbol.upper())]
+    st.write(match)
     for stock in symbol_list:
         print(f"Fetching the {stock} stock data")
-        match = inst[(inst['name'].str.upper() == stock.upper())]
+
         print(match)
         # result = int(match['instrument_token'].values[0])
         # print(result)
