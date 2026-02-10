@@ -135,6 +135,18 @@ def backtest_rsi_mean_reversion_adx(df):
                 position = 0
 
     return pd.DataFrame(trades)
+
+def MACDIndicator(df):
+    df['EMA12']= df.Close.ewm(span=12).mean()
+    df['EMA26']= df.Close.ewm(span=26).mean()
+    df['MACD'] = df.EMA12 - df.EMA26
+    df['Signal'] = df.MACD.ewm(span=9).mean()
+    df['MACD_diff']=df.MACD - df.Signal
+    df.loc[(df['MACD_diff']>0) & (df.MACD_diff.shift(1)<0),'Decision MACD']='Buy'
+    df.loc[(df['MACD_diff']<0) & (df.MACD_diff.shift(1)>0),'Decision MACD']='Sell'
+    df.dropna()
+    print('MACD indicators added')
+    return df
     
 def performance_metrics(trades,sy):
     if trades.empty:
