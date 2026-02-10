@@ -76,7 +76,7 @@ if st.button("Shortlist", use_container_width=True):
     for stock in symbol_list:
         print(f"Fetching the {stock} stock data")
         from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
-        df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
+        df = get_historical_data(enctoken, stock, interval, from_date, to_date)
         # df = yf.download(tickers=yf_tick, period="1y")
         # df.columns = df.columns.get_level_values(0)
         df = MACDIndicator(df)
