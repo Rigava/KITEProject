@@ -127,7 +127,7 @@ if st.button("Shortlist", use_container_width=True):
 # --- Fetch Data ---
 if st.button("Fetch Data"):
     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
-    token = get_token_by_name(stock, enctoken)
+    token = get_token_by_name(symbol, enctoken)
     df = get_historical_data(enctoken, token, interval, from_date, to_date)
     df = add_indicators(df)
     df["ADX"] = compute_adx(df,14)
@@ -143,7 +143,7 @@ if st.button("Fetch Data"):
         
 if st.button("Backtesting Mean reversion"):  
     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
-    token = get_token_by_name(stock, enctoken)
+    token = get_token_by_name(symbol, enctoken)
     df = get_historical_data(enctoken, token, interval, from_date, to_date)
     df = add_indicators(df)
     df["ADX"] = compute_adx(df,14)
@@ -161,7 +161,7 @@ if st.button("Backtesting Mean reversion"):
         
 if st.button("Backtesting Mean reversion wih ADX regime"):  
     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
-    token = get_token_by_name(stock, enctoken)
+    token = get_token_by_name(symbol, enctoken)
     df = get_historical_data(enctoken, token, interval, from_date, to_date)
     df = add_indicators(df)
     df["ADX"] = compute_adx(df,14)
