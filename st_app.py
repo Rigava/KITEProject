@@ -83,7 +83,7 @@ if st.button("Shortlist", use_container_width=True):
     # match = inst[(inst['name'].str.upper() == symbol.upper())]
     # st.write(match)
     # result = int(match['instrument_token'].values[0])
-    st.write(result)
+    # st.write(result)
     i=0
     for stock in symbol_list:
         i+=1
