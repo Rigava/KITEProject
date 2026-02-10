@@ -91,36 +91,37 @@ if st.button("Shortlist", use_container_width=True):
     url = "https://raw.githubusercontent.com/Rigava/DataRepo{}.csv".format("NSE_FN0_upload")
     download = requests.get(url).content
     nse_data = pd.read_csv(io.StringIO(download.decode('utf-8')))   
-    symbol_list = nse_data['zerodha_name'].unique()
+    st.write(nse_data)
+    # symbol_list = nse_data['zerodha_name'].unique()
     # symbols_list = ["AARTI INDUSTRIES","ABB INDIA","GACM TECHNOLOGIES","STYRENIX PERFORMANCE","ACC","ADANI ENTERPRISES","ADOR WELDING","AEGIS LOGISTICS","SANWARIA CONSUMER","HAPPIEST MINDS TECHNO","ALEMBIC","ROUTE MOBILE","ANDHRA SUGARS","GODREJ AGROVET"]
-    for stock in symbols_list:
-        from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
-        df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
-        # df = yf.download(tickers=yf_tick, period="1y")
-        # df.columns = df.columns.get_level_values(0)
-        df = MACDIndicator(df)
-        df = add_indicators(df)
+    # for stock in symbols_list:
+    #     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
+    #     df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
+    #     # df = yf.download(tickers=yf_tick, period="1y")
+    #     # df.columns = df.columns.get_level_values(0)
+    #     df = MACDIndicator(df)
+    #     df = add_indicators(df)
 
-        # Determine buy or sell recommendation based on last two rows of the data to provide buy & sell signals
-        if shortlist_option=="MACD":                
-            if df['Decision MACD'].iloc[-1]=='Buy':    
-                Buy.append(stock)
-            elif df['Decision MACD'].iloc[-1]=='Sell':
-                Sell.append(stock)
-            else:
-                Hold.append(stock) 
-        if shortlist_option=="RSI":
-            if df["RSI"].iloc[-1] > rsi_low and df["RSI"].iloc[-2] < rsi_low: 
-                Buy.append(stock)
-            elif df["RSI"].iloc[-1] < rsi_high and df["RSI"].iloc[-2] > rsi_high:
-                Sell.append(stock)
-            else:
-                Hold.append(stock)
-    # Display stock data and recommendation
-    st.write(":blue[List of stock with positive signal]")
-    st.table({"Stocks":Buy})
-    st.write(":blue[List of stock with negative signal]")
-    st.table({"Stocks":Sell})
+        # # Determine buy or sell recommendation based on last two rows of the data to provide buy & sell signals
+        # if shortlist_option=="MACD":                
+        #     if df['Decision MACD'].iloc[-1]=='Buy':    
+        #         Buy.append(stock)
+        #     elif df['Decision MACD'].iloc[-1]=='Sell':
+        #         Sell.append(stock)
+        #     else:
+        #         Hold.append(stock) 
+        # if shortlist_option=="RSI":
+        #     if df["RSI"].iloc[-1] > rsi_low and df["RSI"].iloc[-2] < rsi_low: 
+        #         Buy.append(stock)
+        #     elif df["RSI"].iloc[-1] < rsi_high and df["RSI"].iloc[-2] > rsi_high:
+        #         Sell.append(stock)
+        #     else:
+        #         Hold.append(stock)
+    # # Display stock data and recommendation
+    # st.write(":blue[List of stock with positive signal]")
+    # st.table({"Stocks":Buy})
+    # st.write(":blue[List of stock with negative signal]")
+    # st.table({"Stocks":Sell})
 
     
 if st.button("Backtesting Mean reversion"):  
