@@ -75,32 +75,48 @@ if st.button("Fetch Data"):
         st.download_button("Download CSV", df.to_csv(index=False), file_name="historical_data.csv")
     else:
         st.error("No data received. Check token, dates, or interval.")
-
-if st.button("Shortlist RSI"):
+#SHORTLIST FEATURE
+if st.button("Shortlist"):
     # tickers = symbol
     st.write(symbols)
-    # symbol_list = tickers.SYMBOL.to_list()
-    # symbol_list= symbol_list[5:]
-    # symbol_list.remove("TATAMOTORS")
-    # #SHORTLIST
-    # Buy = []
-    # Sell = []
-    # Hold = []
-    # rsi_low = st.sidebar.slider("RSI low for buy", min_value=1, max_value=100, value=30, step=1)
-    # rsi_high = st.sidebar.slider("RSI high for sell", min_value=1, max_value=100, value=70, step=1) 
-    # for stock in symbol_list:
-    #     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
-    #     df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
-    #     df = add_indicators(df)
-    #     if df["RSI"].iloc[-1] > rsi_low and df["RSI"].iloc[-2] < rsi_low: 
-    #         Buy.append(stock)
-    #     elif df["RSI"].iloc[-1] < rsi_high and df["RSI"].iloc[-2] > rsi_high:
-    #         Sell.append(stock)
-    #     else:
-    #         Hold.append(stock)  
-    #     # Display stock data and recommendation
-    # st.write(":blue[List of stock with buy signal]",Buy)
-    # st.write(":blue[List of stock with sell signal]",Sell)
+    shortlist_option = st.sidebar.selectbox("select strategy",["RSI","MACD","Value","Breakout"])
+    rsi_low = st.sidebar.slider("RSI low for buy", min_value=1, max_value=100, value=30, step=1)
+    rsi_high = st.sidebar.slider("RSI high for sell", min_value=1, max_value=100, value=70, step=1) 
+    if st.button("Shortlist", use_container_width=True):
+        Buy = []
+        Sell = []
+        Hold = []
+        framelist = [] # add OHLC data
+        data =[] # add fundamental data
+        for stock in symbols:
+            from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
+            df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
+            # df = yf.download(tickers=yf_tick, period="1y")
+            # df.columns = df.columns.get_level_values(0)
+            df = MACDIndicator(df)
+            df = add_indicators(df)
+
+            # Determine buy or sell recommendation based on last two rows of the data to provide buy & sell signals
+            if shortlist_option=="MACD":                
+                if df['Decision MACD'].iloc[-1]=='Buy':    
+                    Buy.append(stock)
+                elif df['Decision MACD'].iloc[-1]=='Sell':
+                    Sell.append(stock)
+                else:
+                    Hold.append(stock) 
+            if shortlist_option=="RSI":
+                if df["RSI"].iloc[-1] > rsi_low and df["RSI"].iloc[-2] < rsi_low: 
+                    Buy.append(stock)
+                elif df["RSI"].iloc[-1] < rsi_high and df["RSI"].iloc[-2] > rsi_high:
+                    Sell.append(stock)
+                else:
+                    Hold.append(stock)
+        # Display stock data and recommendation
+        st.write(":blue[List of stock with positive signal]")
+        st.table({"Stocks":Buy})
+        st.write(":blue[List of stock with negative signal]")
+        st.table({"Stocks":Sell})
+
     
 if st.button("Backtesting Mean reversion"):  
     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
