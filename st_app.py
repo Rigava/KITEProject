@@ -82,12 +82,14 @@ if st.button("Shortlist", use_container_width=True):
     st.write(inst)
     match = inst[(inst['name'].str.upper() == symbol.upper())]
     st.write(match)
+    result = int(match['instrument_token'].values[0])
+    st.write(result)
+    i=0
     for stock in symbol_list:
-        print(f"Fetching the {stock} stock data")
+        i+=1
+        print(f"Fetching Number {i} for {stock} stock data")
+        
 
-        print(match)
-        # result = int(match['instrument_token'].values[0])
-        # print(result)
     #     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
     #     token = get_token_by_name(stock, enctoken)
     #     print(f"Token {token}")
