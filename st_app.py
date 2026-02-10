@@ -88,7 +88,7 @@ if st.button("Shortlist", use_container_width=True):
     Hold = []
     framelist = [] # add OHLC data
     data =[] # add fundamental data
-    url = "https://raw.githubusercontent.com/Rigava/DataRepo{}.csv".format("NSE_FN0_upload")
+    url = "https://raw.githubusercontent.com/Rigava/DataRepo/main/{}.csv".format("NSE_FN0_upload")
     download = requests.get(url).content
     nse_data = pd.read_csv(io.StringIO(download.decode('utf-8')))   
     st.write(nse_data)
