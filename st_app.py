@@ -38,8 +38,6 @@ if not enctoken:
     st.warning("Enter your enctoken from Kite login to proceed.")
     st.stop()
 
-
-
 # from_date = st.sidebar.date_input("From Date", datetime.date.today())
 # to_date = st.sidebar.date_input("To Date", datetime.date.today())
 # --- Date/Interval ---
@@ -54,10 +52,15 @@ with col3:
 with col4:
     indicators = st.multiselect("Select Strategy", ["Mean reversion", "EMA", "RSI", "MACD"], default=["Mean reversion"])
 
-
+# --- Load instruments ---
+# @st.cache_data(ttl=3600)
+def load_symbols(enctoken):
+    df = get_instruments(enctoken)
+    return df
+symbols = load_symbols(enctoken)
+symbol = st.selectbox("Select stock", symbols)
 
 #SHORTLIST FEATURE
-
 shortlist_option = st.sidebar.selectbox("select strategy",["RSI","MACD","Value","Breakout"])
 rsi_low = st.sidebar.slider("RSI low for buy", min_value=1, max_value=100, value=30, step=1)
 rsi_high = st.sidebar.slider("RSI high for sell", min_value=1, max_value=100, value=70, step=1) 
@@ -113,13 +116,7 @@ if st.button("Shortlist", use_container_width=True):
     # st.write(":blue[List of stock with negative signal]")
     # st.table({"Stocks":Sell})
 
-# --- Load instruments ---
-# @st.cache_data(ttl=3600)
-def load_symbols(enctoken):
-    df = get_instruments(enctoken)
-    return df
-symbols = load_symbols(enctoken)
-symbol = st.selectbox("Select stock", symbols)
+
 # --- Fetch Data ---
 if st.button("Fetch Data"):
     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
