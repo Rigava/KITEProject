@@ -89,39 +89,39 @@ if st.button("Shortlist", use_container_width=True):
         i+=1
         print(f"Fetching Number {i} for {stock} stock data")
         match = inst[(inst['name'].str.upper() == stock.upper())]
-        result = int(match['instrument_token'].values[0])
-        print(f"token for {stock} is {result}")
+        token_result = int(match['instrument_token'].values[0])
+        print(f"token for {stock} is {token_result}")
         
 
-    #     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
-    #     token = get_token_by_name(stock, enctoken)
-    #     print(f"Token {token}")
-    #     df = get_historical_data(enctoken, token, interval, from_date, to_date)
-    #     # df = yf.download(tickers=yf_tick, period="1y")
-    #     # df.columns = df.columns.get_level_values(0)
-    #     df = MACDIndicator(df)
-    #     df = add_indicators(df)
+        from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
+        # token = get_token_by_name(stock, enctoken)
+        # print(f"Token {token}")
+        df = get_historical_data(enctoken, token_result, interval, from_date, to_date)
+        # df = yf.download(tickers=yf_tick, period="1y")
+        # df.columns = df.columns.get_level_values(0)
+        df = MACDIndicator(df)
+        df = add_indicators(df)
 
-    #     # Determine buy or sell recommendation based on last two rows of the data to provide buy & sell signals
-    #     if shortlist_option=="MACD":                
-    #         if df['Decision MACD'].iloc[-1]=='Buy':    
-    #             Buy.append(stock)
-    #         elif df['Decision MACD'].iloc[-1]=='Sell':
-    #             Sell.append(stock)
-    #         else:
-    #             Hold.append(stock) 
-    #     if shortlist_option=="RSI":
-    #         if df["RSI"].iloc[-1] > rsi_low and df["RSI"].iloc[-2] < rsi_low: 
-    #             Buy.append(stock)
-    #         elif df["RSI"].iloc[-1] < rsi_high and df["RSI"].iloc[-2] > rsi_high:
-    #             Sell.append(stock)
-    #         else:
-    #             Hold.append(stock)
-    # # Display stock data and recommendation
-    # st.write(":blue[List of stock with positive signal]")
-    # st.table({"Stocks":Buy})
-    # st.write(":blue[List of stock with negative signal]")
-    # st.table({"Stocks":Sell})
+        # Determine buy or sell recommendation based on last two rows of the data to provide buy & sell signals
+        if shortlist_option=="MACD":                
+            if df['Decision MACD'].iloc[-1]=='Buy':    
+                Buy.append(stock)
+            elif df['Decision MACD'].iloc[-1]=='Sell':
+                Sell.append(stock)
+            else:
+                Hold.append(stock) 
+        if shortlist_option=="RSI":
+            if df["RSI"].iloc[-1] > rsi_low and df["RSI"].iloc[-2] < rsi_low: 
+                Buy.append(stock)
+            elif df["RSI"].iloc[-1] < rsi_high and df["RSI"].iloc[-2] > rsi_high:
+                Sell.append(stock)
+            else:
+                Hold.append(stock)
+    # Display stock data and recommendation
+    st.write(":blue[List of stock with positive signal]")
+    st.table({"Stocks":Buy})
+    st.write(":blue[List of stock with negative signal]")
+    st.table({"Stocks":Sell})
 
 
 # --- Fetch Data ---
