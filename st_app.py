@@ -1,5 +1,5 @@
 import streamlit as st
-from st_utils import get_historical_data, get_instruments,plot_ohlc
+from st_utils import get_historical_data, get_instruments,plot_ohlc, get_token_by_name
 import pandas as pd
 import datetime
 from datetime import date, timedelta
@@ -76,7 +76,9 @@ if st.button("Shortlist", use_container_width=True):
     for stock in symbol_list:
         print(f"Fetching the {stock} stock data")
         from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
-        df = get_historical_data(enctoken, stock, interval, from_date, to_date)
+        token = get_token_by_name(stock, enctoken)
+        print(f"Token {token}")
+        df = get_historical_data(enctoken, token, interval, from_date, to_date)
         # df = yf.download(tickers=yf_tick, period="1y")
         # df.columns = df.columns.get_level_values(0)
         df = MACDIndicator(df)
@@ -113,7 +115,8 @@ symbol = st.selectbox("Select stock", symbols)
 # --- Fetch Data ---
 if st.button("Fetch Data"):
     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
-    df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
+    token = get_token_by_name(stock, enctoken)
+    df = get_historical_data(enctoken, token, interval, from_date, to_date)
     df = add_indicators(df)
     df["ADX"] = compute_adx(df,14)
     df["ATR"] = compute_atr(df,14)
@@ -128,7 +131,8 @@ if st.button("Fetch Data"):
         
 if st.button("Backtesting Mean reversion"):  
     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
-    df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
+    token = get_token_by_name(stock, enctoken)
+    df = get_historical_data(enctoken, token, interval, from_date, to_date)
     df = add_indicators(df)
     df["ADX"] = compute_adx(df,14)
     df["ATR"] = compute_atr(df,14)
@@ -145,7 +149,8 @@ if st.button("Backtesting Mean reversion"):
         
 if st.button("Backtesting Mean reversion wih ADX regime"):  
     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
-    df = get_historical_data(enctoken, symbol, interval, from_date, to_date)
+    token = get_token_by_name(stock, enctoken)
+    df = get_historical_data(enctoken, token, interval, from_date, to_date)
     df = add_indicators(df)
     df["ADX"] = compute_adx(df,14)
     df["ATR"] = compute_atr(df,14)
