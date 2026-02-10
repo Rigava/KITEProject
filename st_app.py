@@ -80,14 +80,17 @@ if st.button("Shortlist", use_container_width=True):
     headers = {"Cookie": f"enctoken={enctoken}"}
     inst = pd.read_csv(io.StringIO(requests.get(url, headers=headers).text))
     st.write(inst)
-    match = inst[(inst['name'].str.upper() == symbol.upper())]
-    st.write(match)
-    result = int(match['instrument_token'].values[0])
+    # match = inst[(inst['name'].str.upper() == symbol.upper())]
+    # st.write(match)
+    # result = int(match['instrument_token'].values[0])
     st.write(result)
     i=0
     for stock in symbol_list:
         i+=1
         print(f"Fetching Number {i} for {stock} stock data")
+        match = inst[(inst['name'].str.upper() == stock.upper())]
+        result = int(match['instrument_token'].values[0])
+        print(f"token for {stock} is {result}")
         
 
     #     from_date, to_date = enforce_kite_limits(interval, from_date, to_date)
